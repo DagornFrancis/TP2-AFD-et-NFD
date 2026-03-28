@@ -13,7 +13,7 @@ public class Librairie {
         Pays usa = new Pays("Etats-Unis", "USA");
         Pays suisse = new Pays("Suisse", "CHE");
 
-        // 2. On crée les Auteurs avec les objets Pays
+
         Auteur albertine = new Auteur("Albertine", "Tremblay", canada);
         Auteur john = new Auteur("John", "Smith", usa);
         Auteur jean = new Auteur("Jean", "Némarre", suisse);
@@ -21,8 +21,7 @@ public class Librairie {
         auteurs.add(john);
         auteurs.add(jean);
 
-        // 3. On remplit le catalogue avec les SOUS-CLASSES (Héritage)
-        // Note : J'ajoute des valeurs par défaut pour les pages/durée
+
         ouvrages.add(new OuvragePapier("Titre 1", john, 200));
         ouvrages.add(new OuvragePapier("Titre 2", albertine, 150));
         ouvrages.add(new OuvragePapier("Titre 3", john, 300));
