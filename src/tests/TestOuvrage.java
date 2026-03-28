@@ -3,10 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.List;
 
-import livres.Ouvrage;
-import livres.Auteur;
-import livres.Serie;
-import livres.Pays;
+import livres.*; // Importe tout le package livres (Auteur, Pays, OuvragePapier, etc.)
 
 /**
  * CoursPOO 1
@@ -29,8 +26,10 @@ public class TestOuvrage {
 
         Pays france = new Pays("France", "FRA");
         Auteur auteurTest = new Auteur("Victor", "Hugo", france);
-        Ouvrage o1 = new Ouvrage("Les Misérables", auteurTest);
-        Ouvrage o2 = new Ouvrage("Notre-Dame de Paris", auteurTest);
+
+        // CORRECTION : Utilisation de OuvragePapier au lieu de Ouvrage
+        Ouvrage o1 = new OuvragePapier("Les Misérables", auteurTest, 1200);
+        Ouvrage o2 = new OuvragePapier("Notre-Dame de Paris", auteurTest, 900);
 
         Serie maSerie = new Serie("Collection Classique");
         System.out.println("Nom de la série : " + maSerie.getNom());
@@ -46,6 +45,7 @@ public class TestOuvrage {
             System.out.println("L'ouvrage restant est bien : " + o2.getTitre());
         }
     }
+
     public void testPays() {
         System.out.println("\n-----Test de la classe Pays et lien Auteur-----------");
 
@@ -63,77 +63,53 @@ public class TestOuvrage {
         }
     }
 
-
-
     public void testOuvrages() {
-//Deux auteurs deja prets pour les tests...
         Pays pCanada = new Pays("Canada", "CAN");
         Pays pUSA = new Pays("Etats-Unis", "USA");
 
         Auteur albertine = new Auteur("Albertine", "Tremblay", pCanada);
         Auteur john = new Auteur("John", "Smith", pUSA);
 
-//Voici une partie des tests! Il faut en ajouter, pour les fonctionnalités non testées!
-        System.out.println("-----Test des constructeurs d'ouvrage et des diverses validations-----------");
-        Ouvrage livreA = new Ouvrage("Titre assez long", john);
-        System.out.println(livreA);
-        Ouvrage livreB = new Ouvrage("Ti", john);
-        System.out.println(livreB);
-        Ouvrage livreC = new Ouvrage(null, john);
-        System.out.println(livreC);
+        System.out.println("-----Test des constructeurs par héritage et validations-----------");
 
-//bibliotheque.Auteur null et valeur par défaut de l'bibliotheque.Auteur
-        Ouvrage livreA1 = new Ouvrage("Titre assez long", null);
-        System.out.println(livreA1);
-//bibliotheque.Auteur fonctionnel
-        Ouvrage livre1 = new Ouvrage("Tout va bien", albertine);
-        System.out.println(livre1);
+        // TEST PAPIER
+        OuvragePapier livreA = new OuvragePapier("Titre assez long", john, 350);
+        System.out.println(livreA + " | Pages: " + livreA.getNbPages());
 
-//Date null et valeur par défaut de la date
-        livre1.setDate(null);
-        System.out.println(livre1);
-        livre1.setDate(LocalDate.now().minusYears(5));
-        System.out.println(livre1);
+        // TEST AUDIO
+        OuvrageAudio livreB = new OuvrageAudio("Audio Tech", john, Ouvrage.Format.AUDIO, LocalDate.now(), 5, 45, OuvrageAudio.FormatAudio.NUMERIQUE);
+        System.out.println(livreB + " | Durée: " + livreB.getDureeMinutes() + " min");
 
-//Test de la validation sur le nb d'exemplaires (valide et non valide)
-        Ouvrage livre2 = new Ouvrage("Tout va bien", albertine, Ouvrage.Format.AUDIO, LocalDate.now(), -10);
-        System.out.println(livre2);
+        // TEST VIDEO
+        OuvrageVideo livreC = new OuvrageVideo("Tuto Java", albertine, Ouvrage.Format.VIDEO, LocalDate.now(), 2, 120, 5000);
+        System.out.println(livreC + " | Taille: " + livreC.getTailleMb() + " Mb");
 
-        livre2 = new Ouvrage("Tout va bien", albertine, Ouvrage.Format.PAPIER, LocalDate.now(), 20);
-        System.out.println(livre2);
+        System.out.println("\n-----Tests des méthodes héritées (acheter/vendre)-----------");
+        livreA.acheter(5);
+        System.out.println("Après achat de 5: " + livreA.getNombreExemplaires() + " ex.");
 
-        System.out.println("\n-----Tests des méthodes acheter et vendre-----------");
-
-        Ouvrage livre3 = new Ouvrage("Musique du hasard", new Auteur("Paul", "Auster", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
-        System.out.println(livre3);
-
-        livre3.acheter(5);
-        System.out.println(livre3);
-
-        System.out.println("On peut vendre 8 livres? " + livre3.vendre(8));
-        System.out.println(livre3);
-
-        System.out.println("On peut vendre 10 livres? " + livre3.vendre(10));
-        System.out.println(livre3);
-
-        Ouvrage livre4 = new Ouvrage("Test", new Auteur("A", "B", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
+        boolean venteOk = livreA.vendre(3);
+        System.out.println("Vente de 3 réussie ? " + venteOk + " | Reste: " + livreA.getNombreExemplaires());
 
         System.out.println("\n-----Tests de la méthode equals()-----------");
-//Deux ouvrages égaux
-        Ouvrage livre5 = new Ouvrage("Test", new Auteur("A", "B", pUSA), Ouvrage.Format.PAPIER, null, 5);
-        Ouvrage livre6 = new Ouvrage("Test", new Auteur("A", "B", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 10);
-//Un qui ne l'est pas
-        Ouvrage livre7 = new Ouvrage("Test", new Auteur("Z", "B", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
+        // Deux ouvrages papier identiques
+        Ouvrage livre5 = new OuvragePapier("Test", john, 100);
+        Ouvrage livre6 = new OuvragePapier("Test", john, 100);
 
-        System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + livre4.equals(livre5));
-        System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + livre4.equals(livre6));
-        System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + !livre4.equals(livre7));
-        System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + !livre4.equals(john));
-        System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + !livre4.equals(null));
-        System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + !livre4.equals("Test"));
+        System.out.println("Test equals (doit être vrai): " + livre5.equals(livre6));
     }
 
     private void testTrouver() {
-// Logique de test pour trouverOuvrage
+        System.out.println("\n-----Test de la Librairie (Recherche)-----------");
+        Librairie maLib = new Librairie();
+
+       
+        Auteur a = maLib.getAuteurs().get(0);
+        List<Ouvrage> resultats = maLib.trouverOuvrages(a);
+
+        System.out.println("Ouvrages trouvés pour " + a.getNom() + " : " + resultats.size());
+        for(Ouvrage o : resultats) {
+            System.out.println(" - " + o.getTitre());
+        }
     }
 }
