@@ -6,6 +6,7 @@ import java.util.List;
 import livres.Ouvrage;
 import livres.Auteur;
 import livres.Serie;
+import livres.Pays;
 
 /**
  * CoursPOO 1
@@ -20,12 +21,14 @@ public class TestOuvrage {
         test.testOuvrages();
         test.testTrouver();
         test.testSerie();
+        test.testPays();
     }
 
     public void testSerie() {
         System.out.println("\n-----Test de la classe Serie (Ajout et Retrait)-----------");
 
-        Auteur auteurTest = new Auteur("Victor", "Hugo", "France");
+        Pays france = new Pays("France", "FRA");
+        Auteur auteurTest = new Auteur("Victor", "Hugo", france);
         Ouvrage o1 = new Ouvrage("Les Misérables", auteurTest);
         Ouvrage o2 = new Ouvrage("Notre-Dame de Paris", auteurTest);
 
@@ -43,13 +46,34 @@ public class TestOuvrage {
             System.out.println("L'ouvrage restant est bien : " + o2.getTitre());
         }
     }
+    public void testPays() {
+        System.out.println("\n-----Test de la classe Pays et lien Auteur-----------");
+
+        Pays p1 = new Pays("Canada", "CAN");
+        System.out.println("Pays valide crée : " + p1);
+
+        Auteur a1 = new Auteur("Albertine", "Tremblay", p1);
+        System.out.println("Auteur lié au pays : " + a1.getNom() + " d'origine " + a1.getPaysOrigine().getNom());
+
+        try {
+            System.out.println("Test de validation code invalide (ca) :");
+            Pays pInvalide = new Pays("Canada", "ca");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erreur interceptée comme prévu : " + e.getMessage());
+        }
+    }
+
+
 
     public void testOuvrages() {
-        //Deux auteurs deja prets pour les tests...
-        Auteur albertine = new Auteur("Albertine", "Tremblay", "Canada");
-        Auteur john = new Auteur("John", "Smith", "Etats-Unis");
+//Deux auteurs deja prets pour les tests...
+        Pays pCanada = new Pays("Canada", "CAN");
+        Pays pUSA = new Pays("Etats-Unis", "USA");
 
-        //Voici une partie des tests! Il faut en ajouter, pour les fonctionnalités non testées!
+        Auteur albertine = new Auteur("Albertine", "Tremblay", pCanada);
+        Auteur john = new Auteur("John", "Smith", pUSA);
+
+//Voici une partie des tests! Il faut en ajouter, pour les fonctionnalités non testées!
         System.out.println("-----Test des constructeurs d'ouvrage et des diverses validations-----------");
         Ouvrage livreA = new Ouvrage("Titre assez long", john);
         System.out.println(livreA);
@@ -58,20 +82,20 @@ public class TestOuvrage {
         Ouvrage livreC = new Ouvrage(null, john);
         System.out.println(livreC);
 
-        //bibliotheque.Auteur null et valeur par défaut de l'bibliotheque.Auteur
+//bibliotheque.Auteur null et valeur par défaut de l'bibliotheque.Auteur
         Ouvrage livreA1 = new Ouvrage("Titre assez long", null);
         System.out.println(livreA1);
-        //bibliotheque.Auteur fonctionnel
+//bibliotheque.Auteur fonctionnel
         Ouvrage livre1 = new Ouvrage("Tout va bien", albertine);
         System.out.println(livre1);
 
-        //Date null et valeur par défaut de la date
+//Date null et valeur par défaut de la date
         livre1.setDate(null);
         System.out.println(livre1);
         livre1.setDate(LocalDate.now().minusYears(5));
         System.out.println(livre1);
 
-        //Test de la validation sur le nb d'exemplaires (valide et non valide)
+//Test de la validation sur le nb d'exemplaires (valide et non valide)
         Ouvrage livre2 = new Ouvrage("Tout va bien", albertine, Ouvrage.Format.AUDIO, LocalDate.now(), -10);
         System.out.println(livre2);
 
@@ -80,7 +104,7 @@ public class TestOuvrage {
 
         System.out.println("\n-----Tests des méthodes acheter et vendre-----------");
 
-        Ouvrage livre3 = new Ouvrage("Musique du hasard", new Auteur("Paul", "Auster", "Etats-Unis"), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
+        Ouvrage livre3 = new Ouvrage("Musique du hasard", new Auteur("Paul", "Auster", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
         System.out.println(livre3);
 
         livre3.acheter(5);
@@ -92,14 +116,14 @@ public class TestOuvrage {
         System.out.println("On peut vendre 10 livres? " + livre3.vendre(10));
         System.out.println(livre3);
 
-        Ouvrage livre4 = new Ouvrage("Test", new Auteur("A", "B", "Etats-Unis"), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
+        Ouvrage livre4 = new Ouvrage("Test", new Auteur("A", "B", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
 
-        System.out.println("\n-----Tests de la  méthode equals()-----------");
-        //Deux ouvrages égaux
-        Ouvrage livre5 = new Ouvrage("Test", new Auteur("A", "B", "Etats-Unis"), Ouvrage.Format.PAPIER, null, 5);
-        Ouvrage livre6 = new Ouvrage("Test", new Auteur("A", "B", "Etats-Unis"), Ouvrage.Format.PAPIER, LocalDate.now(), 10);
-        //Un qui ne l'est pas
-        Ouvrage livre7 = new Ouvrage("Test", new Auteur("Z", "B", "Etats-Unis"), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
+        System.out.println("\n-----Tests de la méthode equals()-----------");
+//Deux ouvrages égaux
+        Ouvrage livre5 = new Ouvrage("Test", new Auteur("A", "B", pUSA), Ouvrage.Format.PAPIER, null, 5);
+        Ouvrage livre6 = new Ouvrage("Test", new Auteur("A", "B", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 10);
+//Un qui ne l'est pas
+        Ouvrage livre7 = new Ouvrage("Test", new Auteur("Z", "B", pUSA), Ouvrage.Format.PAPIER, LocalDate.now(), 5);
 
         System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + livre4.equals(livre5));
         System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + livre4.equals(livre6));
@@ -110,6 +134,6 @@ public class TestOuvrage {
     }
 
     private void testTrouver() {
-        // Logique de test pour trouverOuvrage
+// Logique de test pour trouverOuvrage
     }
 }
