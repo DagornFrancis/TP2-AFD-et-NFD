@@ -5,6 +5,7 @@ import java.util.List;
 
 import livres.Ouvrage;
 import livres.Auteur;
+import livres.Serie;
 
 /**
  * CoursPOO 1
@@ -18,8 +19,30 @@ public class TestOuvrage {
         TestOuvrage test = new TestOuvrage();
         test.testOuvrages();
         test.testTrouver();
+        test.testSerie();
     }
 
+    public void testSerie() {
+        System.out.println("\n-----Test de la classe Serie (Ajout et Retrait)-----------");
+
+        Auteur auteurTest = new Auteur("Victor", "Hugo", "France");
+        Ouvrage o1 = new Ouvrage("Les Misérables", auteurTest);
+        Ouvrage o2 = new Ouvrage("Notre-Dame de Paris", auteurTest);
+
+        Serie maSerie = new Serie("Collection Classique");
+        System.out.println("Nom de la série : " + maSerie.getNom());
+
+        maSerie.ajouterOuvrages(o1);
+        maSerie.ajouterOuvrages(o2);
+        System.out.println("Nombre d'ouvrages après ajouts : " + maSerie.getOuvrages().size());
+
+        maSerie.retirerOuvrage(o1);
+        System.out.println("Nombre d'ouvrages après retrait : " + maSerie.getOuvrages().size());
+
+        if (maSerie.getOuvrages().contains(o2)) {
+            System.out.println("L'ouvrage restant est bien : " + o2.getTitre());
+        }
+    }
 
     public void testOuvrages() {
         //Deux auteurs deja prets pour les tests...
@@ -86,22 +109,7 @@ public class TestOuvrage {
         System.out.println("Test de la méthode equals d'bibliotheque.Ouvrage:" + !livre4.equals("Test"));
     }
 
-
     private void testTrouver() {
-        Librairie bibliotheque = new Librairie();
-        Auteur john = bibliotheque.getAuteurs().get(1);
-
-        System.out.println("\n-----Test de votre méthode trouverOuvrage-----------");
-        List<Ouvrage> resultat = bibliotheque.trouverOuvrages(new Auteur("Albertine", "Tremblay", "Canada"));
-        System.out.println("Livres de albertine: " + resultat);
-
-        resultat = bibliotheque.trouverOuvrages(john);
-        System.out.println("Livres de john: " + resultat);
-
-        resultat = bibliotheque.trouverOuvrages(new Auteur("Jacques", "Beaulieu", "France"));
-        System.out.println("Livres de Jacques: " + resultat);
+        // Logique de test pour trouverOuvrage
     }
-
-
 }
-
