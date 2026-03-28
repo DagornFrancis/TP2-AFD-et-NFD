@@ -3,7 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.List;
 
-import livres.*; // Importe tout le package livres (Auteur, Pays, OuvragePapier, etc.)
+import livres.*;
 
 /**
  * CoursPOO 1
@@ -97,13 +97,14 @@ public class TestOuvrage {
         Ouvrage livre6 = new OuvragePapier("Test", john, 100);
 
         System.out.println("Test equals version Franck: " + livre5.equals(livre6));
+        System.out.println("Test equals version dagorn partenaire: " + livre5.equals(livre6));
     }
 
     private void testTrouver() {
         System.out.println("\n-----Test de la Librairie (Recherche)-----------");
         Librairie maLib = new Librairie();
 
-       
+
         Auteur a = maLib.getAuteurs().get(0);
         List<Ouvrage> resultats = maLib.trouverOuvrages(a);
 
