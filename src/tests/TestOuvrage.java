@@ -98,6 +98,7 @@ public class TestOuvrage {
 
         System.out.println("Test equals version Franck: " + livre5.equals(livre6));
         System.out.println("Test equals version dagorn partenaire: " + livre5.equals(livre6));
+        System.out.println("Test equals (doit être vrai): " + livre5.equals(livre6));
     }
 
     private void testTrouver() {
