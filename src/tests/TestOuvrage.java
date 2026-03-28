@@ -96,7 +96,7 @@ public class TestOuvrage {
         Ouvrage livre5 = new OuvragePapier("Test", john, 100);
         Ouvrage livre6 = new OuvragePapier("Test", john, 100);
 
-        System.out.println("Test equals (doit être vrai): " + livre5.equals(livre6));
+        System.out.println("Test equals version Franck: " + livre5.equals(livre6));
     }
 
     private void testTrouver() {
